@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#183c35" />
+    <meta name="description" content="Practice Japanese numbers, weekdays, months, and days of the month. A1.1 exercises in both directions, with answer checking and highlighted corrections." />
+    <title>Kazu — Japanese practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Kazu home"><span class="brand-icon">か</span>kazu<span class="brand-dot">.</span></a>
+      <span class="topbar-tagline">A little Japanese, every day.</span>
+      <div class="topbar-right"><span class="practice-indicator"></span> YOUR PRACTICE SPACE <span class="avatar" aria-label="Learner profile">学</span></div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-heading">YOUR LEARNING PATH</div>
+        <div class="level-title"><span class="level-icon">芽</span><div><strong>First steps</strong><span>Build your foundations</span></div></div>
+        <div class="course-label"><span>A1.1</span> BEGINNER <span class="chevron">⌃</span></div>
+        <nav class="lesson-nav" aria-label="A1.1 exercises"><a class="lesson active" href="#numbers" aria-current="page"><span class="lesson-symbol">数</span><span>Numbers<small>0 – 9,999</small></span><span class="active-dot"></span></a><a class="lesson" href="#dates"><span class="lesson-symbol">日</span><span>Days & dates<small>Weekdays · months · days</small></span><span class="active-dot"></span></a></nav>
+        <div class="sidebar-bottom"><span class="little-spark">✳</span><p>Small steps.<br>Real progress.</p><span class="sidebar-note">You don’t have to be perfect.<br>You just have to keep going.</span></div>
+        <div class="sidebar-footer"><span class="status-dot"></span> Made for your own pace</div>
+      </aside>
+      <main id="practice">
+        <div class="breadcrumb">Your learning path <span>/</span> A1.1 <span>/</span> <strong id="current-lesson">Numbers</strong></div>
+        <section class="page-heading">
+          <div><div class="eyebrow"><span class="pill">A1.1</span> THE FOUNDATIONS</div><h1 id="lesson-title">Make every number count<span>.</span></h1><p id="lesson-instructions">Numerals → hiragana or rōmaji. Kanji + hiragana → digits (0–9).</p></div>
+          <div class="heading-stamp" aria-hidden="true"><span>一 二 三</span><small>いち・に・さん</small><span class="stamp-spark">✧</span></div>
+        </section>
+        <section class="overview" aria-label="Practice overview">
+          <div class="overview-intro"><span class="overview-icon">あ</span><div><strong id="overview-title">Numbers, one at a time</strong><span id="overview-description">From zero to nine thousand nine hundred ninety-nine.</span></div></div>
+          <div class="stat"><strong id="total-correct">0</strong><span>correct answers</span></div><div class="stat"><strong id="accuracy">—</strong><span>accuracy</span></div>
+        </section>
+        <section class="practice-section" aria-labelledby="practice-title">
+          <div class="section-top"><div><h2 id="practice-title">Let’s practice <span class="count-badge" id="set-count">6 numbers</span></h2><p id="practice-description">A fresh set of numbers. A little more confidence.</p></div><button id="new-set" class="button secondary"><span aria-hidden="true">⟳</span> New set</button></div>
+          <div class="exercise-panel">
+            <div class="toolbar"><div class="mode-tabs" role="group" aria-label="Number display"><button class="mode active" data-mode="mixed" aria-pressed="true">Mixed <span>漢 / 1</span></button><button class="mode" data-mode="numerals" aria-pressed="false" id="forward-mode">Numerals <span>123</span></button><button class="mode" data-mode="kanji" aria-pressed="false">Kanji + hiragana <span>漢</span></button></div><label class="range-label" for="range" id="number-range">Range <select id="range"><option value="9999">0 – 9,999</option><option value="99">0 – 99</option><option value="999">0 – 999</option></select></label><label class="range-label" for="date-category" id="date-filter" hidden>Practice <select id="date-category"><option value="all">All days & dates</option><option value="weekdays">Weekdays</option><option value="months">Months</option><option value="days">Days of the month</option></select></label></div>
+            <div class="exercise-head"><span id="prompt-column">NUMBER</span><span>YOUR ANSWER</span><span></span></div>
+            <form id="exercise-form" novalidate><div id="exercise-list"></div><div class="panel-footer"><span class="keyboard-tip"><kbd>↵</kbd> Press enter to check an answer</span><button class="button primary" type="submit">Check answers <span aria-hidden="true">↗</span></button></div></form>
+          </div>
+          <div class="under-panel"><span><span class="privacy-icon">◈</span> Your progress is saved on this device.</span><button id="reveal" class="text-button">Show answers <span aria-hidden="true">↗</span></button></div>
+          <div id="session-message" class="session-message" role="status" aria-live="polite"></div>
+        </section>
+        <aside class="tip-card" id="lesson-tip"><span class="tip-icon">✧</span><div><strong>A small reminder</strong><p>Some numbers have a sound of their own. Watch out for <span lang="ja">さんびゃく</span> (300), <span lang="ja">ろっぴゃく</span> (600), and <span lang="ja">はっぴゃく</span> (800).</p></div><span class="tip-art" aria-hidden="true">三</span></aside>
+        <footer class="main-footer"><span>Practice makes familiar.</span><span lang="ja">こつこつ、まいにち。 <span class="footer-flower">✳</span></span></footer>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
