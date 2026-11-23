@@ -83,6 +83,40 @@ test('dates deep link, categories, direction, checking and comparisons work', as
   } finally { await window.happyDOM.close(); }
 });
 
+test('full dates test includes every weekday, month, and day exactly once', async () => {
+  const { window, document, state } = setup('#dates');
+  try {
+    const session = document.querySelector('#date-session');
+    session.value = 'full';
+    session.dispatchEvent(new window.Event('change'));
+    assert.equal(document.querySelectorAll('.exercise-row').length, 50);
+    assert.equal(document.querySelector('#set-count').textContent, '50 dates');
+    assert.equal(document.querySelector('#date-category').value, 'all');
+    assert.equal(document.querySelector('#date-category').disabled, true);
+    assert.equal(new Set(state.items().map(item => item.date.id)).size, 50);
+    for (const [category, count] of [['weekdays', 7], ['months', 12], ['days', 31]]) {
+      assert.equal(state.items().filter(item => item.date.category === category).length, count);
+    }
+    assert.equal(state.items().filter(item => item.kind === 'numerals').length, 25);
+    assert.equal(state.items().filter(item => item.kind === 'kanji').length, 25);
+    state.items().forEach((item, index) => {
+      document.querySelector(`#answer-${index}`).value = item.kind === 'kanji' ? item.date.english : item.date.hiragana;
+    });
+    document.querySelector('#exercise-form').dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true }));
+    assert.ok(state.items().every(item => item.correct));
+    assert.match(document.querySelector('#set-progress').textContent, /50\/50 checked · 50 correct/);
+    assert.match(document.querySelector('#session-message').textContent, /All 50 correct/);
+    document.querySelector('#new-set').click();
+    assert.equal(state.items().length, 50);
+    assert.match(document.querySelector('#set-progress').textContent, /0\/50 checked · 0 correct/);
+    session.value = 'quick';
+    session.dispatchEvent(new window.Event('change'));
+    assert.equal(state.items().length, 6);
+    assert.equal(document.querySelector('#date-category').disabled, false);
+    assert.equal(document.querySelector('#set-progress').hidden, true);
+  } finally { await window.happyDOM.close(); }
+});
+
 test('lesson switching preserves separate progress and updates controls', async () => {
   const { window, document, state } = setup();
   try {

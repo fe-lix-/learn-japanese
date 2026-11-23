@@ -36,6 +36,7 @@ Includes irregular hundreds and thousands, common standalone alternative reading
 Open **A1.1 → Days & dates** in the sidebar, or use `/#dates`.
 
 - Practice all 7 weekdays, 12 months, and 31 days of the month.
+- Choose **Set → Full test · all 50** for a shuffled test containing every item exactly once. Mixed direction gives 25 English prompts and 25 Japanese prompts. The test shows checked/correct counts and includes the usual answer comparisons. **New set** restarts with a fresh order; **Quick practice · 6** returns to short sets.
 - Choose all categories together, or focus on weekdays, months, or day numbers.
 - English prompts (e.g. `Monday`, `April`, `20th`) expect Japanese: hiragana, kanji, or Hepburn rōmaji.
 - Japanese prompts show kanji with hiragana below (e.g. `月曜日` / `げつようび`). Answer in English for weekdays/months, or with a day number such as `20` or `20th`.

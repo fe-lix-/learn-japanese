@@ -38,11 +38,25 @@ function answerHint(exercise) {
   return exercise.date && exercise.date.category !== 'days' ? 'English name' : 'Digits (0–9)';
 }
 
+function updateSetProgress() {
+  const full = lesson === 'dates' && $('#date-session').value === 'full';
+  $('#set-progress').hidden = !full;
+  if (!full) return;
+  const checked = exercises.filter(item => item.lastChecked !== null).length;
+  const correct = exercises.filter(item => item.correct).length;
+  const shown = exercises.filter(item => item.revealed).length;
+  $('#set-progress').textContent = `Full test · ${checked}/${exercises.length} checked · ${correct} correct${shown ? ` · ${shown} answers shown` : ''}`;
+}
+
 function newSet(focus = false) {
+  const full = lesson === 'dates' && $('#date-session').value === 'full';
+  if (full) $('#date-category').value = 'all';
+  $('#date-category').disabled = full;
   const category = $('#date-category').value;
-  // In an all-category set, include each topic in both exercise directions.
+  // Quick mixed sets cover each topic in both directions. Full tests include
+  // every entry exactly once, in shuffled order.
   const dateItems = lesson === 'dates'
-    ? (category === 'all' ? ['weekdays', 'months', 'days'].flatMap(topic => randomDateItems(2, topic)) : randomDateItems(6, category))
+    ? (full ? randomDateItems(50, 'all') : category === 'all' ? ['weekdays', 'months', 'days'].flatMap(topic => randomDateItems(2, topic)) : randomDateItems(6, category))
     : [];
   const items = lesson === 'dates'
     ? dateItems.map(date => ({ date }))
@@ -57,6 +71,11 @@ function newSet(focus = false) {
       <div class="answer-cell"><div class="input-wrap"><input id="answer-${index}" aria-label="${answerHint(exercise)} for ${promptFor(exercise)}" aria-describedby="feedback-${index}" placeholder="${answerHint(exercise)}" inputmode="${exercise.kind === 'kanji' && (!exercise.date || exercise.date.category === 'days') ? 'numeric' : 'text'}" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="128" /><span class="input-status" aria-hidden="true"></span></div><div class="answer-feedback" id="feedback-${index}" aria-live="polite"></div><button class="show-answer text-button" type="button" data-index="${index}" aria-label="Show answer ${index + 1}" hidden>Show answer ↗</button><div class="answer-comparison" id="comparison-${index}" role="region" aria-label="Answer comparison ${index + 1}" hidden></div></div>
       <button class="check-one" type="button" data-index="${index}" aria-label="Check answer ${index + 1}" title="Check answer">↗</button>
     </div>`).join('');
+  $('#set-count').textContent = `${exercises.length} ${lesson === 'dates' ? 'dates' : 'numbers'}`;
+  $('#practice-description').textContent = full
+    ? 'All 7 weekdays, 12 months, and 31 days. Every item, once.'
+    : lesson === 'dates' ? 'A fresh set of days & dates. A little more confidence.' : 'A fresh set of numbers. A little more confidence.';
+  updateSetProgress();
   $('#session-message').textContent = '';
   $('#reveal').disabled = false;
   $('#reveal').innerHTML = 'Show answers <span aria-hidden="true">↗</span>';
@@ -117,6 +136,7 @@ function revealAnswer(index) {
     : (exercise.kind === 'kanji' ? 'Answer shown · digits (0–9)' : `${toHepburn(exercise.number)} · ${exercise.number === 0 ? 'ぜろ / zero also accepted' : 'answer shown'}`);
   setFeedback(index, 'revealed', revealMessage);
   $(`#row-${index} .check-one`).disabled = true;
+  updateSetProgress();
   if (exercises.every(item => item.correct || item.revealed)) {
     $('#reveal').disabled = true;
     $('#reveal').textContent = 'Answers shown';
@@ -146,7 +166,8 @@ function check(index) {
     $(`#row-${index} .check-one`).disabled = true;
   }
   const completed = exercises.filter((item) => item.correct).length;
-  if (completed === exercises.length) $('#session-message').textContent = 'よくできました！ All six correct. Ready for a fresh set?';
+  updateSetProgress();
+  if (completed === exercises.length) $('#session-message').textContent = `よくできました！ All ${exercises.length} correct. Ready for a fresh set?`;
 }
 
 $('#exercise-form').addEventListener('submit', (event) => {
@@ -185,6 +206,7 @@ $('#exercise-list').addEventListener('input', (event) => {
 $('#new-set').addEventListener('click', () => newSet(true));
 $('#range').addEventListener('change', () => newSet());
 $('#date-category').addEventListener('change', () => newSet());
+$('#date-session').addEventListener('change', () => newSet());
 for (const tab of document.querySelectorAll('.mode')) {
   tab.addEventListener('click', () => {
     mode = tab.dataset.mode;
@@ -224,6 +246,7 @@ function selectLesson() {
   $('#forward-mode').innerHTML = dates ? 'English <span>EN</span>' : 'Numerals <span>123</span>';
   $('#number-range').hidden = dates;
   $('#date-filter').hidden = !dates;
+  $('#date-session-control').hidden = !dates;
   $('#lesson-tip').innerHTML = dates
     ? '<span class="tip-icon">✧</span><div><strong>Some dates have their own rhythm</strong><p>The 1st is <span lang="ja">ついたち</span>, the 20th is <span lang="ja">はつか</span>. April, July, and September are <span lang="ja">しがつ・しちがつ・くがつ</span>. These are calendar dates, not durations.</p></div><span class="tip-art" aria-hidden="true">日</span>'
     : '<span class="tip-icon">✧</span><div><strong>A small reminder</strong><p>Some numbers have a sound of their own. Watch out for <span lang="ja">さんびゃく</span> (300), <span lang="ja">ろっぴゃく</span> (600), and <span lang="ja">はっぴゃく</span> (800).</p></div><span class="tip-art" aria-hidden="true">三</span>';
